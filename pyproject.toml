@@ -13,10 +13,12 @@ dependencies = [
     "flask",
     "flask-cors",
 #    "faster-whisper",
-#    "torch",
-#    "transformers",
-#    "silero",
+    "torch",
+    "transformers",
+    "silero",
+    "pyttsx3",
     "soundfile",
+    "sqlalchemy",
     "numpy",
 ]
 
