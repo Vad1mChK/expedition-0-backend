@@ -8,8 +8,8 @@ tts_bp = Blueprint("tts", __name__)
 def generate_voice() -> any:
     data = request.get_json()
     text = data.get("text", "")
-    provider = data.get("provider", "sapi5")
-    voice = data.get("voice", "Maxim")
+    provider = data.get("provider", "silero")
+    voice = data.get("voice", "eugene")
 
     if not text:
         return {"error": "Text is required"}, 400
