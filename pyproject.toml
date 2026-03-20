@@ -33,4 +33,7 @@ where = ["."]
 include = ["app*"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["test"]
+python_files = "test_*.py"
+python_functions = "test_*"
+norecursedirs = ["data", "venv", ".git", "test/ai"]

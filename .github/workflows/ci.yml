@@ -53,7 +53,7 @@ jobs:
       - name: Run Pytest (no AI services)
         env:
           # Used to toggle off heavy AI loading in test environments
-          TESTING: "True"
+          E0B_TESTING_NOAI: true
         run: |
           # Only run deterministic unit and integration tests
-          pytest test/ -v --maxfail=2 --ignore=test/ai
+          pytest test/ --ignore=test/ai/ -v --maxfail=2
