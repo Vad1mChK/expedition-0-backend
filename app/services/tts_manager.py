@@ -25,6 +25,8 @@ class TtsManager(BaseTtsManager):
             "silero": SileroProvider(),
             "sapi5": SapiProvider()
         }
+        if not os.path.exists(self.storage_path):
+            os.mkdir(self.storage_path)
 
     @property
     def allowed_providers(self):
