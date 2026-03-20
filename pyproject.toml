@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "expedition-0-backend"
+version = "0.0.0a0"
+description = "Backend for the Sovietwave VR game Expedition-0"
+authors = [{ name = "Vad1mChK" }]
+requires-python = ">=3.10"
+
+dependencies = [
+    "flask",
+    "flask-cors",
+#    "faster-whisper",
+#    "torch",
+#    "transformers",
+#    "silero",
+    "soundfile",
+    "numpy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-flask",
+    "flake8",
+    "black",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
