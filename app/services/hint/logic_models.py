@@ -1,4 +1,6 @@
-# app/services/hint/models.py
+# app/services/hint/logic_models.py
+from enum import Enum
+
 from pydantic import BaseModel, Field
 from typing import Literal, Optional, Union
 from app.services.hint.logic_ops import TritUnOp, TritBinOp, NonBinOp
@@ -46,3 +48,9 @@ LogicNode = Union[TritValNode, TritUnNode, TritBinNode, NonValNode, NonBinNode]
 class LogicTaskRoot(BaseModel):
     rootId: int
     nodes: list[LogicNode]
+
+
+class LogicInterfaceTypes(Enum):
+    TERNARY_EQUATION = "TernaryEquation"
+    NONARY_EQUATION = "NonaryEquation"
+    TERNARY_CIRCUIT = "TernaryCircuit"

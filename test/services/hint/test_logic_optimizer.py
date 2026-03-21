@@ -1,5 +1,5 @@
 import pytest
-from app.services.hint.models import LogicTaskRoot
+from app.services.hint.logic_models import LogicTaskRoot
 from app.services.hint.logic_optimizer import LogicTaskOptimizer
 from app.services.hint.logic_ops import TritBinOp
 

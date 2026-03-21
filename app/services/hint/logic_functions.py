@@ -44,6 +44,21 @@ def eval_nonary_binary(op: NonBinOp, left: int, right: int) -> int:
 
 
 def eval_ternary_binary_short_circuit(op: TritBinOp, left: int | None, right: int | None) -> int | None:
+    """
+    Evaluates if the ternary logic binary operator can be short-circuited, i.e. if the result remains the same with
+    only one fixed operand, no matter the value of the other operand.
+    Such cases include, for any arbitrary value of `X`:
+
+    - `And(0, X) = And(X, 0) = 0`
+    - `Xor(1, X) = Xor(X, 1) = 1`
+    - `Or(2, X) = Or(X, 2) = 2`
+    - `Impl(0, X) = Impl(X, 2) = 2` for both Kleene and Lukasiewicz implication.
+
+    :param op: The ternary logic 2-place operator.
+    :param left: The left operand (trit). Pass this value only if the operand is fixed.
+    :param right: The right operand (trit). Pass this value only if the operand is fixed.
+    :return: The result trit if this operation can be short-circuited, else None.
+    """
     if left is None and right is None:
         return None
 

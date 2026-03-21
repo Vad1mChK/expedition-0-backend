@@ -1,5 +1,5 @@
 # app/services/hint/processor.py
-from app.services.hint.models import LogicTaskRoot, TritValNode, NonValNode, LogicNode
+from app.services.hint.logic_models import LogicTaskRoot, TritValNode, NonValNode, LogicNode
 from app.services.hint.logic_functions import eval_ternary_unary, eval_ternary_binary, eval_nonary_binary, \
     eval_ternary_binary_short_circuit
 
@@ -61,14 +61,18 @@ class LogicTaskOptimizer:
                 changed = True
 
     def _check_short_circuit(self, node: LogicNode):
-        """Applies the XOR, AND, OR, and IMPL identities."""
+        """Applies identities only if the short-circuiting child is locked."""
         if not node.locked or node.type != "TritBin":
             return None
 
-        # Helper to get value of a child IF it's a value node
-        l_val = self.nodes[node.leftId].val if self.nodes[node.leftId].type == "TritVal" else None
-        r_val = self.nodes[node.rightId].val if self.nodes[node.rightId].type == "TritVal" else None
+        l_node = self.nodes[node.leftId]
+        r_node = self.nodes[node.rightId]
 
+        # We only care about the value if the node is a locked TritVal
+        l_val = l_node.val if (l_node.type == "TritVal" and l_node.locked) else None
+        r_val = r_node.val if (r_node.type == "TritVal" and r_node.locked) else None
+
+        # This should return None if no logical identity is triggered by LOCKED values
         return eval_ternary_binary_short_circuit(node.op, l_val, r_val)
 
     def _replace_with_value(self, node_id, val):
