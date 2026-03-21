@@ -3,7 +3,7 @@ from app.services.hint.logic_ops import TritUnOp, TritBinOp, NonBinOp
 from app.services.hint.logic_functions import (
     eval_ternary_unary,
     eval_ternary_binary,
-    eval_nonary_binary
+    eval_nonary_binary, eval_ternary_binary_short_circuit
 )
 
 
@@ -34,10 +34,10 @@ def test_eval_ternary_unary_invalid_range() -> None:
     # OR: max(L, R)
     (TritBinOp.OR, 0, 2, 2),
     (TritBinOp.OR, 1, 0, 1),
-    # XOR: (L + R) % 3
-    (TritBinOp.XOR, 1, 1, 2),
-    (TritBinOp.XOR, 2, 1, 0),
-    (TritBinOp.XOR, 2, 2, 1),
+    # XOR: OR(AND(L, NOT(R)), AND(NOT(L), R))
+    (TritBinOp.XOR, 0, 2, 2),
+    (TritBinOp.XOR, 2, 2, 0),
+    (TritBinOp.XOR, 1, 2, 1),
     # ImplKleene: max(2 - L, R)
     (TritBinOp.IMPL_KLEENE, 2, 0, 0),  # Not(2) or 0 -> 0 or 0
     (TritBinOp.IMPL_KLEENE, 0, 0, 2),  # Not(0) or 0 -> 2 or 0
@@ -69,3 +69,26 @@ def test_eval_ternary_binary_invalid_range() -> None:
 ])
 def test_eval_nonary_binary_valid(op: NonBinOp, left: int, right: int, expected: int) -> None:
     assert eval_nonary_binary(op, left, right) == expected
+
+
+@pytest.mark.parametrize("op, left, right, expected", [
+    (TritBinOp.AND, None, None, None),
+    (TritBinOp.AND, 0, None, 0),
+    (TritBinOp.AND, None, 0, 0),
+    (TritBinOp.AND, 1, None, None),
+    (TritBinOp.OR, 2, None, 2),
+    (TritBinOp.OR, None, 2, 2),
+    (TritBinOp.OR, 0, None, None),
+    (TritBinOp.XOR, 1, None, 1),
+    (TritBinOp.XOR, None, 1, 1),
+    (TritBinOp.XOR, 2, None, None),
+    (TritBinOp.IMPL_KLEENE, 0, None, 2),
+    (TritBinOp.IMPL_KLEENE, None, 2, 2),
+    (TritBinOp.IMPL_KLEENE, 2, None, None)
+])
+def test_eval_ternary_binary_short_circuit(op: TritBinOp, left: int | None, right: int | None, expected: int | None):
+    result = eval_ternary_binary_short_circuit(op, left, right)
+    if expected is not None:
+        assert result == expected
+    else:
+        assert result is None

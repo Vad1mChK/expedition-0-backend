@@ -1,6 +1,17 @@
 from enum import Enum
 
 
+class LogicNodeType(Enum):
+    """
+    Valid types of nodes (values, operators) in ternary (base 3) and nonary (base 9) logic.
+    """
+    TRIT_VAL = "TritVal"
+    TRIT_UN = "TritUn"
+    TRIT_BIN = "TritBin"
+    NON_VAL = "NonVal"
+    NON_BIN = "NonBin"
+
+
 class TritUnOp(Enum):
     """
     Opcodes for 1-place operators in ternary logic.

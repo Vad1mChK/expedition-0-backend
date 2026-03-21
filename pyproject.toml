@@ -20,6 +20,7 @@ dependencies = [
     "soundfile",
     "sqlalchemy",
     "numpy",
+    "pydantic"
 ]
 
 [project.optional-dependencies]

@@ -23,7 +23,7 @@ def eval_ternary_binary(op: TritBinOp, left: int, right: int):
         case TritBinOp.OR:
             return max(left, right)
         case TritBinOp.XOR:
-            return (left + right) % 3
+            return min(max(left, right), 2 - min(left, right))
         case TritBinOp.IMPL_KLEENE:
             return max(2 - left, right)
         case TritBinOp.IMPL_LUKASIEWICZ:
@@ -41,3 +41,24 @@ def eval_nonary_binary(op: NonBinOp, left: int, right: int) -> int:
         case NonBinOp.NONARY_CONCAT:
             return 9 * left + right
     raise ValueError(f"Unknown nonary binary op: {op}")
+
+
+def eval_ternary_binary_short_circuit(op: TritBinOp, left: int | None, right: int | None) -> int | None:
+    if left is None and right is None:
+        return None
+
+    match op:
+        case TritBinOp.AND:
+            if left == 0 or right == 0:
+                return 0
+        case TritBinOp.OR:
+            if left == 2 or right == 2:
+                return 2
+        case TritBinOp.XOR:
+            if left == 1 or right == 1:
+                return 1
+        case TritBinOp.IMPL_KLEENE | TritBinOp.IMPL_LUKASIEWICZ:
+            if left == 0 or right == 2:
+                return 2
+
+    return None
