@@ -50,7 +50,7 @@ class LogicTaskRoot(BaseModel):
     nodes: list[LogicNode]
 
 
-class LogicInterfaceTypes(Enum):
+class LogicInterfaceType(Enum):
     TERNARY_EQUATION = "TernaryEquation"
     NONARY_EQUATION = "NonaryEquation"
     TERNARY_CIRCUIT = "TernaryCircuit"

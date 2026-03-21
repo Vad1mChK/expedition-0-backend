@@ -13,6 +13,7 @@ dependencies = [
     "flask",
     "flask-cors",
 #    "faster-whisper",
+    "num2words",
     "torch",
     "transformers",
     "silero",
