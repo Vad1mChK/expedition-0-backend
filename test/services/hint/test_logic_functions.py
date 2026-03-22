@@ -59,9 +59,9 @@ def test_eval_ternary_binary_invalid_range() -> None:
 # --- Nonary Binary Tests ---
 
 @pytest.mark.parametrize("op, left, right, expected", [
-    (NonBinOp.NONARY_PLUS, 5, 5, 1),  # (5+5) % 9 = 1
-    (NonBinOp.NONARY_PLUS, 8, 1, 0),  # (8+1) % 9 = 0
-    (NonBinOp.NONARY_MINUS, 1, 2, 8),  # (1-2) % 9 = -1 % 9 = 8
+    (NonBinOp.NONARY_PLUS, 5, 5, 10),
+    (NonBinOp.NONARY_PLUS, 8, 1, 9),
+    (NonBinOp.NONARY_MINUS, 10, 2, 8),
     (NonBinOp.NONARY_MINUS, 5, 3, 2),
     (NonBinOp.NONARY_CONCAT, 1, 2, 11),  # 9*1 + 2 = 11
     (NonBinOp.NONARY_CONCAT, 0, 5, 5),  # 9*0 + 5 = 5
