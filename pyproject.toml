@@ -12,6 +12,7 @@ requires-python = ">=3.10"
 dependencies = [
     "flask",
     "flask-cors",
+    "requests-toolbelt",
 #    "faster-whisper",
     "num2words",
     "torch",

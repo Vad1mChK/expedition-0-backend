@@ -51,6 +51,10 @@ class LogicTaskRoot(BaseModel):
 
 
 class LogicInterfaceType(Enum):
+    """
+    Type of the logic task interface.
+    It only impacts hint responses and override sets of allowed operators.
+    """
     TERNARY_EQUATION = "TernaryEquation"
     NONARY_EQUATION = "NonaryEquation"
     TERNARY_CIRCUIT = "TernaryCircuit"

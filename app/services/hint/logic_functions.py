@@ -35,9 +35,9 @@ def eval_ternary_binary(op: TritBinOp, left: int, right: int):
 def eval_nonary_binary(op: NonBinOp, left: int, right: int) -> int:
     match op:
         case NonBinOp.NONARY_PLUS:
-            return (left + right) % 9
+            return left + right
         case NonBinOp.NONARY_MINUS:
-            return (left - right) % 9
+            return left - right
         case NonBinOp.NONARY_CONCAT:
             return 9 * left + right
     raise ValueError(f"Unknown nonary binary op: {op}")
