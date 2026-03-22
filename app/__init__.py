@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
 from app.api.health import health_bp
+from app.api.hint import hint_bp
 from app.api.tts import tts_bp
 from app.services.tts_manager import TtsManager, MockTtsManager
 from app.storage.models.base import Base
@@ -33,5 +34,6 @@ def create_app(testing: bool = False) -> Flask:
     # This keeps your API versioned or categorized neatly
     app.register_blueprint(health_bp, url_prefix="/api")
     app.register_blueprint(tts_bp, url_prefix="/api/tts")
+    app.register_blueprint(hint_bp, url_prefix="/api/hint")
 
     return app
