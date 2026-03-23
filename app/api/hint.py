@@ -5,7 +5,7 @@ from requests_toolbelt import MultipartEncoder
 from app.api.hint_dto import HintRequestDto
 from app.services.hint.hint_generators import DeterministicHintTextGenerator
 from app.services.hint.logic_models import LogicInterfaceType
-from app.services.hint.logic_ops import LogicNodeType, TritBinOp, NonBinOp
+from app.services.hint.logic_ops import LogicNodeType, TritBinOp, NonBinOp, TritUnOp
 from app.services.hint.logic_solver import LogicTaskSolver
 from app.services.hint.logic_solver_types import LogicNodeOverrideMap
 
@@ -15,8 +15,8 @@ hint_bp = Blueprint("hint", __name__)
 def get_overrides_for_interface(interface: LogicInterfaceType) -> LogicNodeOverrideMap:
     """Example of limiting operators based on the UI interface type."""
     if interface == LogicInterfaceType.TERNARY_CIRCUIT:
-        # Maybe circuits don't support Lukasiewicz gates in this level
         return {
+            LogicNodeType.TRIT_UN: {TritUnOp.IDENTITY},
             LogicNodeType.TRIT_BIN: {TritBinOp.AND, TritBinOp.OR, TritBinOp.XOR}
         }
     if interface == LogicInterfaceType.TERNARY_EQUATION:
