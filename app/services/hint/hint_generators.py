@@ -127,7 +127,7 @@ class DeterministicHintTextGenerator(HintTextGenerator):
     ) -> HintText:
         if logic_result.state == LogicTaskSolverState.SOLVED:
             if attempt_count == 0:
-                text = "Задачу уже решили до вас. Равенство уже верно."
+                text = "Задача уже решена. Равенство уже верно."
             elif mistake_count == 0:
                 text = "Задача решена без ошибок. Отличная работа, товарищ!"
             else:
