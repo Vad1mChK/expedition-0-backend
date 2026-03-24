@@ -31,7 +31,7 @@ class TritBinNode(BaseNode):
 
 class NonValNode(BaseNode):
     type: Literal["NonVal"]
-    val: int = Field(ge=0, le=8)
+    val: int = Field(ge=0)
 
 
 class NonBinNode(BaseNode):
