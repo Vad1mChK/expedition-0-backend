@@ -16,7 +16,7 @@ def get_overrides_for_interface(interface: LogicInterfaceType) -> LogicNodeOverr
     """Example of limiting operators based on the UI interface type."""
     if interface == LogicInterfaceType.TERNARY_CIRCUIT:
         return {
-            LogicNodeType.TRIT_UN: {TritUnOp.IDENTITY},
+            LogicNodeType.TRIT_UN: {TritUnOp.NOT},
             LogicNodeType.TRIT_BIN: {TritBinOp.AND, TritBinOp.OR, TritBinOp.XOR}
         }
     if interface == LogicInterfaceType.TERNARY_EQUATION:
