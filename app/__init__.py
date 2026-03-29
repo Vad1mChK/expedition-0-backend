@@ -1,4 +1,5 @@
 import os.path
+import pathlib
 
 from flask import Flask
 from flask_cors import CORS
@@ -19,6 +20,10 @@ def create_app(testing: bool = False) -> Flask:
 
     # 1. Database & Service Setup
     if not no_ai:
+        db_file = 'data/audio_cache.db'
+        os.makedirs(os.path.dirname(db_file), exist_ok=True)
+        pathlib.Path(db_file).touch(exist_ok=True)
+
         engine = create_engine("sqlite:///data/audio_cache.db")
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)

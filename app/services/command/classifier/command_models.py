@@ -3,9 +3,12 @@ from typing import Dict, Any, Optional, Annotated, Union, Literal
 
 from pydantic import BaseModel, Field
 
+from app.services.hint.logic_ops import TritUnOp, TritBinOp, NonBinOp
+
 
 class CommandOpcode(str, Enum):
     HINT_NEAREST = "HINT_NEAREST"
+    HINT_TRUTHTABLE = "HINT_TRUTHTABLE"
     SETTINGS_VOLUME = "SETTINGS_VOLUME"
     PROGRESS_LEVEL = "PROGRESS_LEVEL"
     FACT_RANDOM = "FACT_RANDOM"
@@ -14,6 +17,11 @@ class CommandOpcode(str, Enum):
 
 class BaseRecognizedArgs(BaseModel):
     pass
+
+
+class HintTruthtableRecognizedArgs(BaseRecognizedArgs):
+    operator: Union[TritUnOp, TritBinOp, NonBinOp]
+    balanced: bool
 
 
 class SettingsVolumeRecognizedArgs(BaseRecognizedArgs):
@@ -33,6 +41,11 @@ class BaseCommand(BaseModel):
 
 class HintNearestCommand(BaseCommand):
     opcode: Literal[CommandOpcode.HINT_NEAREST]
+
+
+class HintTruthtableCommand(BaseCommand):
+    opcode: Literal[CommandOpcode.HINT_TRUTHTABLE]
+    recognizedArgs: HintTruthtableRecognizedArgs
 
 
 class SettingsVolumeCommand(BaseCommand):
@@ -56,6 +69,7 @@ class UnknownCommand(BaseCommand):
 Command = Annotated[
     Union[
         HintNearestCommand,
+        HintTruthtableCommand,
         SettingsVolumeCommand,
         ProgressLevelCommand,
         FactRandomCommand,

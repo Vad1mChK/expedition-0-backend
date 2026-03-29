@@ -7,14 +7,14 @@ name = "expedition-0-backend"
 version = "0.0.0a0"
 description = "Backend for the Sovietwave VR game Expedition-0"
 authors = [{ name = "Vad1mChK" }]
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 
 dependencies = [
     "flask",
     "flask-cors",
     "requests-toolbelt",
 #    "faster-whisper",
-    "pymorphy2",
+    "pymorphy3",
     "num2words",
     "torch",
     "transformers",
@@ -23,7 +23,12 @@ dependencies = [
     "soundfile",
     "sqlalchemy",
     "numpy",
-    "pydantic"
+    "scikit-learn",
+    "pydantic",
+    "pandas",
+    "matplotlib",
+    "squarify",
+    "seaborn",
 ]
 
 [project.optional-dependencies]
