@@ -80,7 +80,8 @@ def test_progress_level_context_parsing(mock_storage):
     # Test 'some_tasks_done' logic branch
     ctx = {
         "levelId": "e0:machine_hall",
-        "taskCount": 2  # dual form 'задачи'
+        "totalTaskCount": 3,
+        "completedTaskCount": 1,  # 3 - 1 = 2 (2 tasks remain)
     }
     res = gen.generate(cmd, ctx)
     assert res.unsanitized == "in Machine Hall-L: 2 task2"
