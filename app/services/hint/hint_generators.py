@@ -50,6 +50,7 @@ class HintTextGenerator(ABC):
             logic_result: LogicTaskSolverResult,
             attempt_count: int = 0,
             mistake_count: int = 0,
+            # hint_call_count: int = 0,
             ternary_logic_balanced: bool = False,
             # Unbalanced: [0, 1, 2]; Balanced: [-1, 0, 1], it doesn't affect internal logic
     ) -> HintText:
@@ -123,15 +124,16 @@ class DeterministicHintTextGenerator(HintTextGenerator):
             logic_result: LogicTaskSolverResult,
             attempt_count: int = 0,
             mistake_count: int = 0,
+            # hint_call_count: int = 0,
             ternary_logic_balanced: bool = False
     ) -> HintText:
         if logic_result.state == LogicTaskSolverState.SOLVED:
             if attempt_count == 0:
                 text = "Задача уже решена. Равенство уже верно."
             elif mistake_count == 0:
-                text = "Задача решена без ошибок. Отличная работа, товарищ!"
+                text = "Задача решена без ошибок. Отличная работа!"
             else:
-                text = "Задача решена. Хорошая работа, товарищ!"
+                text = "Задача решена. Хорошая работа!"
             return HintText(text, text)
         if logic_result.state == LogicTaskSolverState.UNSOLVABLE:
             text = random.choice([
