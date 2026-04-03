@@ -10,25 +10,33 @@ authors = [{ name = "Vad1mChK" }]
 requires-python = ">=3.12"
 
 dependencies = [
+    # Electrical communication
     "flask",
     "flask-cors",
     "requests-toolbelt",
-#    "faster-whisper",
+    # Base NLP
     "pymorphy3",
     "num2words",
-    "torch",
-    "transformers",
-    "silero",
-    "pyttsx3",
+    # Base audio
     "soundfile",
-    "sqlalchemy",
+    "pydub",
+    # Base ML
     "numpy",
     "scikit-learn",
     "pydantic",
     "pandas",
+    # AI models
+    "torch",
+    "transformers",
+    "silero",
+    "pyttsx3",
+    "vosk",
+    # Data visualization
     "matplotlib",
     "squarify",
     "seaborn",
+    # Database
+    "sqlalchemy",
 ]
 
 [project.optional-dependencies]
