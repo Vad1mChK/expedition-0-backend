@@ -1,6 +1,7 @@
 import os.path
 import pathlib
 
+from flasgger import Swagger
 from torch import cuda as torch_cuda
 from flask import Flask
 from flask_cors import CORS
@@ -16,11 +17,15 @@ from app.services.command.text_generator import DeterministicCommandTextGenerato
 from app.services.tts_manager import TtsManager, MockTtsManager
 from app.storage.models.base import Base
 
+
 def create_app(testing: bool = False) -> Flask:
     app = Flask(__name__)
+    swagger = Swagger(app)
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     no_ai = testing or os.getenv("E0B_TESTING_NOAI") == "true"
+
+    app.config["STT_SERVICE_BASE_URL"] = os.getenv("STT_SERVICE_BASE_URL")
 
     # 1. Database & Service Setup
     if not no_ai:

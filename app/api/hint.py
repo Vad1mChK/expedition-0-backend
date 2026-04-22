@@ -1,6 +1,8 @@
 import json
 from flask import Blueprint, jsonify, Response, request, current_app
 from requests_toolbelt import MultipartEncoder
+from time import perf_counter as timer
+from flasgger import swag_from
 
 from app.api.hint_dto import HintRequestDto
 from app.services.hint.hint_generators import DeterministicHintTextGenerator
@@ -31,11 +33,14 @@ def get_overrides_for_interface(interface: LogicInterfaceType) -> LogicNodeOverr
 
 
 @hint_bp.post("/generate_hint")
+@swag_from("../../docs/openapi/generate_hint.yml")
 def generate_hint() -> Response:
     # 1. Obtain request data
     raw_data = request.get_json()
     if not raw_data:
         return Response("Missing JSON body", status=400)
+
+    t_start_sojourn = timer()
 
     # 2. Validate using DTO
     try:
@@ -60,6 +65,8 @@ def generate_hint() -> Response:
         ternary_logic_balanced=dto.balanced
     )
 
+    t_start_tts = timer()
+
     # 5. Generate TTS Audio
     # Access your TtsManager from the app config
     tts_manager = current_app.config["TTS_MANAGER"]
@@ -69,12 +76,22 @@ def generate_hint() -> Response:
         voice="eugene"
     )
 
+    t_end_tts = timer()
+
     # 6. Build Multipart Response
     metadata = {
         "text": hint_text.unsanitized,
         "sanitizedText": hint_text.sanitized,
         "status": solver_result.state.value
     }
+
+    t_end_sojourn = timer()
+    print(
+        "Execution time: "
+        f"TTS {(t_end_tts - t_start_tts):.6f}s "
+        f"Total on server {(t_end_sojourn - t_start_sojourn):.6f}s "
+    )
+    print(f"Returning response: {metadata}")
 
     m = MultipartEncoder(
         fields={

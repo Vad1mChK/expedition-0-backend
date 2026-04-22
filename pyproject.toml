@@ -39,6 +39,8 @@ dependencies = [
     "seaborn",
     # Database
     "sqlalchemy",
+    # OpenAPI / Swagger
+    "flasgger"
 ]
 
 [project.optional-dependencies]
