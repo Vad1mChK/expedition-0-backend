@@ -149,10 +149,16 @@ class DeterministicCommandTextGenerator(BaseCommandTextGenerator):
                 if command.recognizedArgs.target == "logic":
                     fact = self._rng.choice(f_res["logic"])
                 else:
-                    # Merge any_level lore with current level lore
                     level_id = context_args.get("levelId", "any_level")
-                    pool = f_res["lore"]["any_level"] + f_res["lore"].get(level_id, [])
-                    fact = self._rng.choice(pool)
+                    pool_any = f_res["lore"].get("any_level", [])
+                    pool_concrete = f_res["lore"].get(level_id, [])
+                    pool = pool_any + pool_concrete
+                    weights = [1] * len(pool_any) + [5] * len(pool_concrete)
+                    if not pool:
+                        text = "К сожалению, у меня нет знаний об этой станции."
+                        return CommandText(text, text)
+
+                    fact = self._rng.choices(pool, weights, k=1)[0]
 
                 return CommandText(fact["display_text"], fact["tts_text"])
 

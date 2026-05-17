@@ -1,11 +1,13 @@
 import os.path
 import pathlib
 
+from flasgger import Swagger
 from torch import cuda as torch_cuda
 from flask import Flask
 from flask_cors import CORS
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from time import perf_counter as timer
 
 from app.api.command import command_bp
 from app.api.health import health_bp
@@ -16,11 +18,17 @@ from app.services.command.text_generator import DeterministicCommandTextGenerato
 from app.services.tts_manager import TtsManager, MockTtsManager
 from app.storage.models.base import Base
 
+
 def create_app(testing: bool = False) -> Flask:
+    t_start = timer()
+
     app = Flask(__name__)
+    swagger = Swagger(app)
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     no_ai = testing or os.getenv("E0B_TESTING_NOAI") == "true"
+
+    app.config["STT_SERVICE_BASE_URL"] = os.getenv("STT_SERVICE_BASE_URL")
 
     # 1. Database & Service Setup
     if not no_ai:
@@ -56,5 +64,8 @@ def create_app(testing: bool = False) -> Flask:
     app.register_blueprint(tts_bp, url_prefix="/api/tts")
     app.register_blueprint(hint_bp, url_prefix="/api/hint")
     app.register_blueprint(command_bp, url_prefix="/api/command")
+
+    t_end = timer()
+    print(f"Server initialised in {t_end - t_start:.6f}s")
 
     return app

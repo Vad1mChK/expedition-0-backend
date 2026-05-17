@@ -39,28 +39,20 @@ class LogicTaskSolver:
         for node_id, node in optimizer.nodes.items():
             if node.locked:
                 continue
-
             node_type_enum = LogicNodeType(node.type)
             field = "val" if node_type_enum in (LogicNodeType.TRIT_VAL, LogicNodeType.NON_VAL) else "op"
             current_content = getattr(node, field)
-
             # Normalize current value for comparison
             raw_current = current_content.value if hasattr(current_content, 'value') else current_content
-
             allowed_set = self.overrides.get(node_type_enum, set())
             possibilities = [
                 p for p in allowed_set
                 if (p.value if hasattr(p, 'value') else p) != raw_current
             ]
-
             if possibilities:
                 params.append({
-                    "node_id": node_id,
-                    "field": field,
-                    "old_value": current_content,
-                    "possibilities": possibilities,
-                    "side": side,
-                    "node_type": node_type_enum
+                    "node_id": node_id, "field": field, "old_value": current_content,
+                    "possibilities": possibilities, "side": side, "node_type": node_type_enum
                 })
         return params
 

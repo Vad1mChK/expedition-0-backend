@@ -86,7 +86,9 @@ def test_eval_nonary_binary_valid(op: NonBinOp, left: int, right: int, expected:
     (TritBinOp.IMPL_KLEENE, None, 2, 2),
     (TritBinOp.IMPL_KLEENE, 2, None, None)
 ])
-def test_eval_ternary_binary_short_circuit(op: TritBinOp, left: int | None, right: int | None, expected: int | None):
+def test_eval_ternary_binary_short_circuit(
+        op: TritBinOp, left: int | None, right: int | None, expected: int | None
+):
     result = eval_ternary_binary_short_circuit(op, left, right)
     if expected is not None:
         assert result == expected

@@ -24,3 +24,16 @@ def generate_voice() -> any:
         return send_file(audio_path, mimetype="audio/wav")
     except Exception as e:
         return {"error": str(e)}, 500
+
+
+@tts_bp.delete("/clear_cache")
+def clear_cache() -> any:
+    tts_manager: TtsManager = current_app.config["TTS_MANAGER"]
+    if not tts_manager:
+        return {"error": "TTS_MANAGER is not set"}, 400
+
+    try:
+        tts_manager.clear_cache()
+        return {"status": "ok"}, 200
+    except Exception as e:
+        return {"error": str(e)}, 500

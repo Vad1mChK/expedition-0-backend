@@ -16,8 +16,8 @@ class CommandAudioVolumes(BaseModel):
 # The opcode and args of the command are not known until classified.
 class CommandContextArgs(BaseModel):
     levelId: str  # usually an identifier like 'e0:machine_hall'
-    completedLevelIds: Optional[List[str]]  # list of completed levels
-    inventory: Optional[Dict[str, int]]
+    completedLevelIds: Optional[List[str]] = None # list of completed levels
+    inventory: Optional[Dict[str, int]] = None
     completedTaskCount: int = 0
     totalTaskCount: int = 0
     hintCount: int = 0
@@ -33,4 +33,5 @@ class CommandRequestDto(BaseModel):
 class CommandResponseDto(BaseModel):
     """Response sent back to Unity."""
     responseText: str
+    recognizedText: str
     command: Command

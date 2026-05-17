@@ -1,0 +1,9 @@
+.venv312
+.idea
+.git
+.github
+.pytest_cache
+scripts
+test
+*.pyc
+__pycache__
