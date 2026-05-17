@@ -1,0 +1,61 @@
+# app/docs/generate_hint.yml
+tags:
+  - Hints
+summary: Generate a logic hint with TTS audio
+description: >
+  Solves a logic puzzle based on the provided nodes and returns metadata
+  along with a generated .wav file for the hint.
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      id: HintRequest
+      required:
+        - leftRoot
+        - rightRoot
+        - leftInterfaceType
+        - rightInterfaceType
+      properties:
+        leftRoot:
+          type: object
+          description: Root LogicNode for the left side
+        rightRoot:
+          type: object
+          description: Root LogicNode for the right side
+        leftInterfaceType:
+          type: string
+          enum: [TERNARY_CIRCUIT, TERNARY_EQUATION, NONARY_EQUATION]
+        rightInterfaceType:
+          type: string
+          enum: [TERNARY_CIRCUIT, TERNARY_EQUATION, NONARY_EQUATION]
+        attemptCount:
+          type: integer
+          default: 0
+        mistakeCount:
+          type: integer
+          default: 0
+        balanced:
+          type: boolean
+          default: false
+responses:
+  200:
+    description: A multipart/form-data response containing metadata and audio
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            metadata:
+              type: object
+              properties:
+                text: {type: string}
+                sanitizedText: {type: string}
+                status: {type: string}
+            audio:
+              type: string
+              format: binary
+  400:
+    description: Missing JSON body
+  422:
+    description: Validation Error (Pydantic)

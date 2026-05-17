@@ -7,17 +7,40 @@ name = "expedition-0-backend"
 version = "0.0.0a0"
 description = "Backend for the Sovietwave VR game Expedition-0"
 authors = [{ name = "Vad1mChK" }]
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 
 dependencies = [
+    # Env vars
+    "python-dotenv",
+    # Electrical communication
     "flask",
     "flask-cors",
-#    "faster-whisper",
-#    "torch",
-#    "transformers",
-#    "silero",
+    "requests-toolbelt",
+    # Base NLP
+    "pymorphy3",
+    "num2words",
+    # Base audio
     "soundfile",
+    "pydub",
+    # Base ML
     "numpy",
+    "scikit-learn",
+    "pydantic",
+    "pandas",
+    # AI models
+    "torch",
+    "transformers",
+    "silero",
+    "pyttsx3",
+    "vosk",
+    # Data visualization
+    "matplotlib",
+    "squarify",
+    "seaborn",
+    # Database
+    "sqlalchemy",
+    # OpenAPI / Swagger
+    "flasgger"
 ]
 
 [project.optional-dependencies]
