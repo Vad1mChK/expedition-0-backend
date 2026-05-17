@@ -1,7 +1,7 @@
 import os
 import shutil
 import tempfile
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
@@ -33,14 +33,28 @@ def storage_path() -> str:
 
 @pytest.fixture
 def tts_manager(db_session: Session, storage_path: str) -> TtsManager:
-    manager = TtsManager(db_session=db_session, storage_path=storage_path)
+    """Provides a TtsManager with mocked out heavy provider constructors."""
+    # Patch the providers at the module level BEFORE TtsManager instantiates them
+    with patch("app.services.tts_manager.SileroProvider") as mock_silero_cls, \
+            patch("app.services.tts_manager.SapiProvider") as mock_sapi_cls:
 
-    # We mock the generate method so we don't actually need Silero/SAPI5 installed,
-    # but we will manually create a dummy file to test the manager's file-handling logic.
-    for provider in manager.providers.values():
-        provider.generate = MagicMock(side_effect=lambda text, voice, path: open(path, "wb").close() or True)
+        mock_silero = MagicMock()
+        mock_sapi = MagicMock()
 
-    return manager
+        mock_silero_cls.return_value = mock_silero
+        mock_sapi_cls.return_value = mock_sapi
+
+        # Safe fake generation that creates an empty file to satisfy Manager logic
+        def fake_generate(text: str, voice: str, path: str) -> bool:
+            with open(path, "wb") as f:
+                f.write(b"")
+            return True
+
+        mock_silero.generate = MagicMock(side_effect=fake_generate)
+        mock_sapi.generate = MagicMock(side_effect=fake_generate)
+
+        manager = TtsManager(db_session=db_session, storage_path=storage_path)
+        return manager
 
 
 def test_get_audio_cache_miss_creates_file_and_db_record(
