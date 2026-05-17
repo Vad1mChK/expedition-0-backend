@@ -4,7 +4,10 @@ import wave
 import io
 import argparse
 import threading
+from contextlib import contextmanager
 from time import perf_counter as timer
+
+import psutil
 from flask import Flask, request, jsonify
 from vosk import Model, KaldiRecognizer
 
@@ -25,6 +28,31 @@ _model = None
 _ready = False
 
 
+@contextmanager
+def profile_resources(process_name: str):
+    # Setup
+    proc = psutil.Process()
+
+    start_time = timer()
+    start_mem = proc.memory_info().rss / (1024 * 1024)  # MB
+
+    yield  # The endpoint logic runs here
+
+    # Results
+    end_time = timer()
+    duration = end_time - start_time
+    cpu_usage = proc.cpu_percent(interval=None)
+    end_mem = proc.memory_info().rss / (1024 * 1024)
+
+    print(
+        f"Profiling results for pipeline '{process_name}': "
+        f"time {duration:.4f}s, "
+        f"cpu {cpu_usage}%, "
+        f"start ram: {start_mem:.4f}MB, "
+        f"end ram: {end_mem:.4f}MB"
+    )
+
+
 def load_model():
     global _model, _ready
     print(f"Loading model: {args.model}...")
@@ -42,6 +70,8 @@ def load_model():
 
 @app.route("/recognize", methods=["POST"])
 def recognize():
+    with profile_resources("stt"):
+        ...
     if not _ready:
         return jsonify({"error": "System heating up. Try again later."}), 418
     if "file" not in request.files:

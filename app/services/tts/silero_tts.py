@@ -21,7 +21,9 @@ class SileroProvider(TtsProvider):
     def generate(self, text: str, voice: str, output_path: str) -> bool:
         # voice here corresponds to silero speakers: 'aidar', 'baya', 'kseniya', 'xenia', 'random'
         sample_rate = 48000
-        self.model.save_wav(text=text, speaker=voice, sample_rate=sample_rate, put_accent=True, put_yo=True)
+        self.model.save_wav(
+            text=text, speaker=voice, sample_rate=sample_rate, put_accent=True, put_yo=True, audio_path=output_path
+        )
         # Silero save_wav usually creates 'test.wav' or returns path; logic needs adjustment for specific output_path
-        os.rename("test.wav", output_path)
-        return True
+        # os.rename("test.wav", output_path)
+        return os.path.exists(output_path)

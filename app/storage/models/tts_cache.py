@@ -8,6 +8,10 @@ from app.storage.models.base import Base
 TTS_CACHE_CAPACITY = 128
 
 
+def get_now():
+    return datetime.datetime.now()
+
+
 class TtsCache(Base):
     __tablename__ = "tts_cache"
 
@@ -15,7 +19,8 @@ class TtsCache(Base):
     text_hash = Column(String(32), primary_key=True)
     model_name = Column(String(64), primary_key=True)
     file_path = Column(String(255), nullable=False)
-    last_accessed = Column(DateTime, default=func.now(), onupdate=func.now())
+    # last_accessed = Column(DateTime, default=func.now(), onupdate=func.now())
+    last_accessed = Column(DateTime, default=get_now, onupdate=get_now)
 
     @staticmethod
     def get_hash(text: str) -> str:
