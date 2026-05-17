@@ -4,12 +4,9 @@ from sqlalchemy import Column, String, DateTime, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 from app.storage.models.base import Base
+from app.util.datetime_utils import get_now
 
 TTS_CACHE_CAPACITY = 128
-
-
-def get_now():
-    return datetime.datetime.now()
 
 
 class TtsCache(Base):
